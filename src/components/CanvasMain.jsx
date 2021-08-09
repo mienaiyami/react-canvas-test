@@ -1,11 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, forwardRef } from "react";
 import CanvasImage from "./canvas/CanvasImage.js";
-export default function CanvasMain({
-    id,
-    dimensions,
-    currentTool,
-    canvasDimensionsUpdater,
-}) {
+const CanvasMain = (
+    {
+        id,
+        dimensions,
+        currentTool,
+        canvasDimensionsUpdater,
+        copyImgToClipboard,
+    },
+    canvasRef
+) => {
     const [mouse, updateMouse] = useState({
         x: null,
         y: null,
@@ -15,12 +19,17 @@ export default function CanvasMain({
         initY: null,
         dragging: false,
     });
-    const canvasRef = useRef(null);
+    // const canvasRef = useRef(null);
     useEffect(() => {
         const canvas = canvasRef.current;
         canvas.width = dimensions.width; //|| window.innerWidth - 200;
         canvas.height = dimensions.height; //|| window.innerHeight - 200;
-    }, [dimensions]);
+    }, [dimensions, canvasRef]);
+    document.oncopy = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        copyImgToClipboard(e);
+    };
     document.onpaste = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -75,6 +84,20 @@ export default function CanvasMain({
             context.stroke();
             context.closePath();
         }
+        if (currentTool.toolName === "eraser") {
+            context.beginPath();
+            context.globalCompositeOperation = "destination-out";
+            context.arc(
+                mouse.x,
+                mouse.y,
+                currentTool.radius,
+                0,
+                Math.PI * 2,
+                true
+            );
+            context.fill();
+            context.closePath();
+        }
         context.restore();
     };
     const dragStart = (e) => {
@@ -108,12 +131,9 @@ export default function CanvasMain({
     };
     return (
         <div className="canvas-cont">
-            {/* <div className="info">
-                <p>
-                    x: {mouse.x}, y: {mouse.y}, dragging:
-                    {mouse.dragging.toString()}
-                </p>
-            </div> */}
+            <div className="info">
+                <p>this is just test version</p>
+            </div>
             <canvas
                 id={id}
                 ref={canvasRef}
@@ -124,4 +144,6 @@ export default function CanvasMain({
             ></canvas>
         </div>
     );
-}
+};
+const forwardedCanvas = forwardRef(CanvasMain);
+export default forwardedCanvas;

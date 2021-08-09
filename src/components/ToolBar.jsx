@@ -56,7 +56,9 @@ export default function ToolBar({
                             onChange={(e) => {
                                 pen.color = e.target.value;
                                 pen.colorTotal =
-                                    pen.color + pen.opacity.toString(16);
+                                    pen.color +
+                                    Math.ceil(pen.opacity * 2.55).toString(16);
+
                                 changePen({ ...pen });
                             }}
                         />
@@ -72,11 +74,11 @@ export default function ToolBar({
                             defaultValue={pen.opacity}
                             ref={refPenOptOpacity}
                             onChange={(e) => {
-                                pen.opacity = parseInt(
-                                    parseInt(e.target.value) * 2.55
-                                );
+                                pen.opacity = parseInt(e.target.value);
+
                                 pen.colorTotal =
-                                    pen.color + pen.opacity.toString(16);
+                                    pen.color +
+                                    Math.ceil(pen.opacity * 2.55).toString(16);
                                 changePen({ ...pen });
                                 console.log(pen.colorTotal);
                             }}
@@ -142,7 +144,7 @@ export default function ToolBar({
                     <BsPen />
                 </button>
                 <button
-                    data-title="Copy"
+                    data-title="Copy(unavailable)"
                     data-state="closed"
                     data-current-tool="false"
                     onClick={copyImgToClipboard}
@@ -150,7 +152,7 @@ export default function ToolBar({
                     <BiCopy />
                 </button>
                 <button
-                    data-title="Rectangle"
+                    data-title="Rectangle(unavailable)"
                     data-current-tool="false"
                     onClick={(event) => selectTool(event, "rectangle")}
                     data-state="closed"
