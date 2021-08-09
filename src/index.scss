@@ -1,0 +1,138 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Roboto, "san-serif";
+}
+body {
+    background: #616161;
+    width: 100vw;
+    height: 100vh;
+    // overflow: hidden;
+    font-family: Roboto, "san-serif";
+    color: #dbdbdb;
+    #app {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        .canvas-cont {
+            width: 100%;
+            height: 100%;
+            .info {
+                padding: 30px;
+                p {
+                    color: #fff;
+                    font-size: 20px;
+                    text-align: center;
+                }
+            }
+            #canvasMain {
+                position: relative;
+                left: 65px;
+                top: 50%;
+                transform: translate(0, -50%);
+                border: 1px solid #fff;
+            }
+        }
+        #toolbar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 100%;
+            background: #1f1f1f;
+            .toolset {
+                display: flex;
+                flex-direction: column;
+                button {
+                    position: relative;
+                    width: 60px;
+                    height: 60px;
+                    background: #ffffff30;
+                    border: none;
+                    &[data-state="closed"] {
+                        background: none;
+                        &::after {
+                            content: attr(data-title);
+                            position: absolute;
+                            left: 100%;
+                            top: 50%;
+                            z-index: 10000;
+                            transform: translate(5px, -50%) scale(0);
+                            transform-origin: left;
+                            transition: transform 0.1s;
+                            padding: 5px;
+                            border-radius: 5px;
+                            background: #1f1f1f;
+                            color: #ffffff;
+                            font-size: 18px;
+                        }
+                        &:hover {
+                            background: #ffffff30;
+                            &::after {
+                                transform: translate(5px, -50%) scale(1);
+                            }
+                        }
+                        &:active {
+                            outline: none;
+                            background: #ffffff10;
+                        }
+                    }
+                    &[data-current-tool="true"] {
+                        background: #ffffff20;
+                    }
+                    svg {
+                        color: #ffffff;
+                        font-size: 20px;
+                    }
+                }
+            }
+            .ctrlOptions {
+                cursor: default;
+                position: absolute;
+                left: calc(100% + 10px);
+                top: 0;
+                transform: translateY(10px);
+                // transition: all 0.2s;
+                background: #1f1f1f;
+                display: flex;
+                flex-direction: column;
+                padding: 10px;
+                border-radius: 5px;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    left: -20px;
+                    width: 0;
+                    height: 0;
+                    border: 10px solid transparent;
+                    border-right: 10px solid #1f1f1f;
+                }
+                .divider {
+                    margin: 5px 0;
+                    height: 0;
+                    width: 100%;
+                    border: 1px solid #fff;
+                }
+                .opts {
+                    label {
+                        display: flex;
+                        flex-direction: row;
+                        height: 40px;
+                        padding: 5px;
+                        align-items: center;
+                        width: 100%;
+                        gap: 10px;
+                        input[type="number"],
+                        input[type="text"] {
+                            background: #ffffff10;
+                            color: #ffffff;
+                            border: none;
+                            padding: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
